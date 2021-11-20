@@ -1,5 +1,6 @@
 package org.infinite.tap;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,13 +12,6 @@ import org.infinite.tap.domain.*;
 public class Main {
 
     public static void main(String[] args) {
-
-        /*      Mock data    */
-        Customer customer = new Customer("Bobby", 9);
-        Customer customer1 = new Customer("Michael", 2);
-        Customer customer2 = new Customer("Zohan", 3);
-        Customer customer3 = new Customer("George", 123);
-        Customer customer4 = new Customer("Valyo", 700);
 
         Product product = new Product("Smartphone", Category.ELECTRONICS, 800.00);
         Product product1 = new Product("Bethooven stamp T-Shirt", Category.CLOTHES, 35.20);
@@ -36,16 +30,7 @@ public class Main {
         List<Product> productArrayList2 = new ArrayList<>();
         productArrayList2.add(product4);
 
-        Order order1 = new Order(productArrayList, LocalDate.now(), Status.PENDING);
-        Order order2 = new Order(productArrayList1, LocalDate.now(), Status.CANCELED);
-        Order order3 = new Order(productArrayList2, LocalDate.now(), Status.DELIVERED);
-        Order order4 = new Order(productArrayList1, LocalDate.now(), Status.DELIVERED);
-
-        List<Order> allOrders = new ArrayList<>();
-        allOrders.add(order1);
-        allOrders.add(order2);
-        allOrders.add(order3);
-        allOrders.add(order4);
+        /* End mock data phase */
 
         // 1. Refactor with Streams
         /*
@@ -59,46 +44,47 @@ public class Main {
         }
         */
 
-        List<Customer> secondTierCustomerList = new ArrayList<>();
+        List<Customer> secondTierCustomerList = Customer.getAll();
         List<Customer> filteredList = new ArrayList<>();
-
-        secondTierCustomerList.add(customer1);
-        secondTierCustomerList.add(customer2);
-        secondTierCustomerList.add(customer3);
-        secondTierCustomerList.add(customer4);
 
         secondTierCustomerList.stream()
                 .filter( c -> c.getTier() == 2)
                 .map(c -> filteredList.add(c))
                 .collect(Collectors.toList());
 
-
-        /* Test */
-        System.out.println("Task 1 solution: Filtered Objects : " + filteredList.size());
+        System.out.println(
+                "======= Task 1 solution: Filtered & mapped Objects ======="
+                + '\n'
+                + filteredList.size()
+                + '\n'
+        );
 
         // 2. Find all canceled orders
-        // List<Order> canceledOrders = ...
-
-        List<Order> cancelledOrders = new ArrayList<>();
-        cancelledOrders.stream()
+        List<Order> cancelledOrders = Order.getAll()
+                .stream()
                 .filter(order -> order.getStatus() == Status.CANCELED)
                 .collect(Collectors.toList());
 
+        System.out.println("======= Task 2: Cancelled orders =======");
+        for (Order order : cancelledOrders) {
+            order.printOrderInfo();
+        }
+
         // 3. Find all pending orders created on Monday
-        // List<Order> pendingOrders = ...
-
-//        List<Order> pendingOrders = allOrders.stream()
-                // solution:
-
-                // filter by the enum and
-
-
+        List<Order> pendingOrders = Order.getAll().stream()
+                .filter(o -> o.getStatus() == Status.PENDING)
+                .filter(o -> o.getOrderDate().getDayOfWeek() == DayOfWeek.MONDAY)
+                .collect(Collectors.toList());
 
         // 4. Find the names of all tier 1 customers
-        // List<String> tier1Names = ...
+         List<String> tier1Names = Customer.getAll().stream()
+                 .filter( c -> c.getTier() == 1 )
+                 .map(Customer::getName)
+                 .collect(Collectors.toList());
 
-
-//                .filter( c -> c.getTier() == 1 )
+        System.out.println("======= Task 4 solution: tier 1 names filter & map =======");
+        System.out.println(tier1Names);
+//
 //
 
 

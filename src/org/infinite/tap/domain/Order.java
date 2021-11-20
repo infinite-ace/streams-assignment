@@ -27,9 +27,31 @@ public class Order {
         return status;
     }
 
+    public void printOrderInfo() {
+        System.out.println(
+                "Order date: " + this.orderDate.toString() + "\n" +
+                "Products in order: " + this.products.size() + "\n" +
+                "Order status: " + this.status  + "\n"
+        );
+    }
+
 
     public static List<Order> getAll() {
-        return new ArrayList<>();
+
+        Order order = new Order(Product.getAll(), LocalDate.of(2021, 3, 22), Status.DELIVERED);
+        Order order1 = new Order(Product.getAll(), LocalDate.now(), Status.PENDING);
+        Order order2 = new Order(Product.getAll(), LocalDate.now(), Status.CANCELED);
+        Order order3 = new Order(Product.getAll(), LocalDate.now(), Status.DELIVERED);
+        Order order4 = new Order(Product.getAll(), LocalDate.now(), Status.DELIVERED);
+
+        List<Order> orders = new ArrayList<>();
+        orders.add(order);
+        orders.add(order1);
+        orders.add(order2);
+        orders.add(order3);
+        orders.add(order4);
+
+        return orders;
     }
 }
 
