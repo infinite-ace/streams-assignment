@@ -39,10 +39,10 @@ public class Order {
     public static List<Order> getAll() {
 
         Order order = new Order(Product.getAll(), LocalDate.of(2021, 3, 22), Status.DELIVERED);
-        Order order1 = new Order(Product.getAll(), LocalDate.now(), Status.PENDING);
-        Order order2 = new Order(Product.getAll(), LocalDate.now(), Status.CANCELED);
-        Order order3 = new Order(Product.getAll(), LocalDate.now(), Status.DELIVERED);
-        Order order4 = new Order(Product.getAll(), LocalDate.now(), Status.DELIVERED);
+        Order order1 = new Order(Product.getAll(), LocalDate.of(2021, 11, 15), Status.PENDING);
+        Order order2 = new Order(Product.getAll(), LocalDate.of(2021, 3, 22),  Status.CANCELED);
+        Order order3 = new Order(Product.getAll(), LocalDate.of(2021, 3, 1),  Status.DELIVERED);
+        Order order4 = new Order(Product.getAll(), LocalDate.of(2021, 3, 2),  Status.DELIVERED);
 
         List<Order> orders = new ArrayList<>();
         orders.add(order);

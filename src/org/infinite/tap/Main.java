@@ -13,22 +13,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Product product = new Product("Smartphone", Category.ELECTRONICS, 800.00);
-        Product product1 = new Product("Bethooven stamp T-Shirt", Category.CLOTHES, 35.20);
-        Product product2 = new Product("Picasso stamp T-Shirt", Category.CLOTHES, 45.20);
-        Product product3 = new Product("Tribal stamp T-Shirt", Category.CLOTHES, 15.20);
-        Product product4 = new Product("The Four Agreements: A Practical Guide to Personal Freedom", Category.BOOKS, 55.00);
-
-        List<Product> productArrayList = new ArrayList<>();
-        productArrayList.add(product1);
-        productArrayList.add(product2);
-        productArrayList.add(product3);
-
-        List<Product> productArrayList1 = new ArrayList<>();
-        productArrayList1.add(product);
-
-        List<Product> productArrayList2 = new ArrayList<>();
-        productArrayList2.add(product4);
+        List<Product> productArrayList = Product.getFirstList();
+        List<Product> productArrayList1 = Product.getSecondList();
+        List<Product> productArrayList2 = Product.getThirdList();
 
         /* End mock data phase */
 
@@ -71,10 +58,17 @@ public class Main {
         }
 
         // 3. Find all pending orders created on Monday
-        List<Order> pendingOrders = Order.getAll().stream()
+        List<Order> orders = Order.getAll();
+
+        List<Order> pendingOrders = orders.stream()
                 .filter(o -> o.getStatus() == Status.PENDING)
                 .filter(o -> o.getOrderDate().getDayOfWeek() == DayOfWeek.MONDAY)
                 .collect(Collectors.toList());
+
+        System.out.println("======= Task 3: Pending orders created on Monday =======");
+        for (Order order : pendingOrders) {
+            order.printOrderInfo();
+        }
 
         // 4. Find the names of all tier 1 customers
          List<String> tier1Names = Customer.getAll().stream()
@@ -84,12 +78,15 @@ public class Main {
 
         System.out.println("======= Task 4 solution: tier 1 names filter & map =======");
         System.out.println(tier1Names);
-//
-//
-
 
         // 5. Find the sum of all TOYS products prices
-        // double toysSum = ...
+         double toysSum = Product.getAll()
+                 .stream()
+                 .filter(p -> p.getCategory() == Category.TOYS)
+                 .mapToDouble(Product::getPrice)
+                 .sum();
+        System.out.println("======= Task 5 solution: Sum of all toys prices is =======");
+        System.out.println(toysSum);
 
         // 6. Find how many clothes have been ordered
         // long countClothes = ...
