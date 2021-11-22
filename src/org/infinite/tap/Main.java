@@ -123,7 +123,7 @@ public class Main {
                 .allMatch(order -> order.getOrderDate().getMonth() == Month.SEPTEMBER &&
                         order.getStatus() == Status.DELIVERED);
 
-        System.out.println("======= Task 7 solution: Do we have a Tier 3 customer named George? =======");
+        System.out.println("======= Task 8 solution: Do all orders from september have a status of Delivered? =======");
         System.out.println(areAllDelivered ? "All orders are delivered" : "Not all orders are delivered");
 
         // 9. Find the category of the max priced product that have ever been ordered
