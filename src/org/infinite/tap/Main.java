@@ -2,6 +2,7 @@ package org.infinite.tap;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,8 +17,6 @@ public class Main {
         List<Product> productArrayList = Product.getFirstList();
         List<Product> productArrayList1 = Product.getSecondList();
         List<Product> productArrayList2 = Product.getThirdList();
-
-        /* End mock data phase */
 
         // 1. Refactor with Streams
         /*
@@ -73,7 +72,7 @@ public class Main {
         // 4. Find the names of all tier 1 customers
          List<String> tier1Names = Customer.getAll().stream()
                  .filter( c -> c.getTier() == 1 )
-                 .map(Customer::getName)
+                 .map(Customer::getName) // same as .map(customer -> customer.getName())
                  .collect(Collectors.toList());
 
         System.out.println("======= Task 4 solution: tier 1 names filter & map =======");
@@ -89,15 +88,43 @@ public class Main {
         System.out.println(toysSum);
 
         // 6. Find how many clothes have been ordered
-        // long countClothes = ...
+        long countClothes = Order.getAll()
+                .stream()
+                /* Logical explanation: Having the stream of all orders */
+                /* we then use the mapToLong method to give us: */
+                /* 1. We need a starting point, so we retrieve all orders as usual.  */
+                /* 2. We get all products inside each order, using the filter on line 99 */
+                .mapToLong(o ->
+                        o.getProducts()
+                        .stream()
+                        .filter(p -> p.getCategory() == Category.CLOTHES)
+                        .count())
+                /* 3. We use the count method to count each product and keep it */
+                /* 4. At this point mapToLong is a LongStream containing all elements. */
+                .sum();
+                /* 5. Finally we sum the elements */
 
+        System.out.println("======= Task 6 solution: Count all clothes ordered =======");
+        System.out.println(countClothes);
         // 7. Find if we have a tier 3 customer named "George"
-        // boolean hasGeorge = ...
+        boolean hasGeorge = Customer.getAll()
+                .stream()
+                .anyMatch(customer ->
+                            customer.getTier() == 3 &&
+                                customer.getName().endsWith("George")
+                );
 
-        //two filters
+        System.out.println("======= Task 7 solution: Do we have a Tier 3 customer named George? =======");
+        System.out.println(hasGeorge ? "We do have a Tier 3 George" : "Nope, we could not find Tier 3 George");
 
         // 8. Find if all orders from September are delivered
-        // boolean areAllDelivered = ...
+        boolean areAllDelivered = Order.getAll()
+                .stream()
+                .allMatch(order -> order.getOrderDate().getMonth() == Month.SEPTEMBER &&
+                        order.getStatus() == Status.DELIVERED);
+
+        System.out.println("======= Task 7 solution: Do we have a Tier 3 customer named George? =======");
+        System.out.println(areAllDelivered ? "All orders are delivered" : "Not all orders are delivered");
 
         // 9. Find the category of the max priced product that have ever been ordered
         // Category category = ...
